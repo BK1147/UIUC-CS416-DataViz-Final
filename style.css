@@ -2,8 +2,29 @@ body {
     font-family: Arial, sans-serif;
   }
   
-  h1 {
+  nav {
     text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  nav ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  nav ul li {
+    display: inline;
+    margin: 0 10px;
+  }
+  
+  nav ul li a {
+    text-decoration: none;
+    color: #000;
+  }
+  
+  .page {
+    text-align: center;
+    margin-top: 20px;
   }
   
   #chart {
@@ -12,3 +33,4 @@ body {
     align-items: center;
     margin-top: 20px;
   }
+  
