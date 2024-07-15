@@ -7,27 +7,22 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <nav>
-    <ul>
-      <li><a href="#" onclick="showPage('introduction')">Introduction</a></li>
-      <li><a href="#" onclick="showPage('charts')">Sample Charts</a></li>
-      <li><a href="#" onclick="showPage('conclusion')">Conclusion</a></li>
-    </ul>
-  </nav>
-
   <div id="introduction" class="page">
     <h1>Welcome to the D3.js Example</h1>
     <p>This is an introduction to our example website using D3.js for data visualization. Navigate through the pages to see different examples of what you can do with D3.js.</p>
+    <button onclick="showPage('charts')">Go to Sample Charts</button>
   </div>
 
   <div id="charts" class="page" style="display:none;">
     <h1>Sample Charts</h1>
     <div id="chart"></div>
+    <button onclick="showPage('conclusion')">Go to Conclusion</button>
   </div>
 
   <div id="conclusion" class="page" style="display:none;">
     <h1>Conclusion</h1>
     <p>Thank you for visiting our example website. We hope you found the examples helpful and inspiring for your own projects with D3.js.</p>
+    <button onclick="showPage('introduction')">Go to Introduction</button>
   </div>
 
   <script src="https://d3js.org/d3.v7.min.js"></script>
