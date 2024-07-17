@@ -61,9 +61,9 @@ async function createCharts1() {
 
   // Create pie charts
   createPieChart(data, 'year', '#chart1');
-  createPieChart(data, 'make', '#chart2');
-  createPieChart(data, 'body', '#chart3');
-  createPieChart(data, 'transmission', '#chart4');
+  //createPieChart(data, 'make', '#chart2');
+  //createPieChart(data, 'body', '#chart3');
+  //createPieChart(data, 'transmission', '#chart4');
 }
 
 // Function to create bar charts for the second charts page
@@ -111,7 +111,7 @@ async function createCharts2() {
   // Create bar charts
   createBarChart(data, 'year', 'sellingprice', '#chart5');
   createBarChart(data, 'odometer', 'sellingprice', '#chart6');
-  createBarChart(data, 'make', 'sellingprice', '#chart7');
+  //createBarChart(data, 'make', 'sellingprice', '#chart7');
 }
 
 // Function to fetch data asynchronously
