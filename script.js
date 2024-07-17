@@ -97,7 +97,6 @@ function createPieChart(data, category, elementId) {
 
   const pie = d3.pie().value(d => d.value);
   const arc = d3.arc().innerRadius(0).outerRadius(radius);
-  const outerArc = d3.arc().innerRadius(radius * 0.9).outerRadius(radius * 0.9);
 
   const g = svg.selectAll('.arc')
     .data(pie(pieData))
@@ -107,34 +106,6 @@ function createPieChart(data, category, elementId) {
   g.append('path')
     .attr('d', arc)
     .attr('fill', d => color(d.data.key));
-
-  // Add the polylines between chart and labels
-  g.append('polyline')
-    .attr('stroke', 'black')
-    .attr('stroke-width', 1)
-    .attr('fill', 'none')
-    .attr('points', function (d) {
-      const pos = outerArc.centroid(d);
-      pos[0] = radius * (midAngle(d) < Math.PI ? 1 : -1);
-      return [arc.centroid(d), outerArc.centroid(d), pos];
-    });
-
-  // Add the labels
-  g.append('text')
-    .attr('transform', function (d) {
-      const pos = outerArc.centroid(d);
-      pos[0] = radius * 0.95 * (midAngle(d) < Math.PI ? 1 : -1);
-      return `translate(${pos})`;
-    })
-    .attr('dy', '0.35em')
-    .attr('text-anchor', function (d) {
-      return midAngle(d) < Math.PI ? 'start' : 'end';
-    })
-    .text(d => d.data.key);
-
-  function midAngle(d) {
-    return d.startAngle + (d.endAngle - d.startAngle) / 2;
-  }
 }
 
 // Function to create bar charts
