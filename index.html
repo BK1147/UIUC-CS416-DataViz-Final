@@ -1,57 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vehicle Sales and Market Trends</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://d3js.org/d3.v7.min.js"></script>
-  <script defer src="script.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Sales and Market Trends</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Introduction Page -->
-  <div class="page" id="introduction">
-    <h1>Vehicle Sales and Market Trends</h1>
-    <p>Welcome to the Vehicle Sales and Market Trends dataset overview. This website provides insights into the sales transactions of various vehicles, including year, make, model, trim, body type, transmission type, VIN, state of registration, condition rating, odometer reading, exterior and interior colors, seller information, MMR values, selling prices, and sale dates.</p>
-    <button onclick="showPage('charts1')">Go to Sample Charts 1</button>
-  </div>
+    <div class="page" id="introduction">
+        <h1>Welcome to the Vehicle Sales and Market Trends</h1>
+        <p>This website provides a comprehensive collection of information pertaining to the sales transactions of various vehicles. This dataset encompasses details such as the year, make, model, trim, body type, transmission type, VIN (Vehicle Identification Number), state of registration, condition rating, odometer reading, exterior and interior colors, seller information, Manheim Market Report (MMR) values, selling prices, and sale dates.</p>
+        <button onclick="showPage('charts1')">Next</button>
+    </div>
 
-  <!-- Charts Page 1 -->
-  <div class="page" id="charts1" style="display: none;">
-    <h1>Vehicle Sales - Charts 1</h1>
-    <p>This page shows various pie charts based on the Vehicle Sales dataset.</p>
-    <label for="yearSelect">Select Year:</label>
-    <select id="yearSelect" onchange="updateCharts()">
-      <option value="all">All</option>
-    </select>
-    <div id="chart1"></div>
-    <div id="chart2"></div>
-    <div id="chart3"></div>
-    <div id="chart4"></div>
-    <button onclick="showPage('introduction')">Previous</button>
-    <button onclick="showPage('charts2')">Go to Sample Charts 2</button>
-  </div>
+    <div class="page" id="charts1">
+        <h2>Pie Charts</h2>
+        <label for="yearSelect">Select Year:</label>
+        <select id="yearSelect" onchange="updateCharts()"></select>
+        <div id="chart1" class="chart"></div>
+        <div id="chart2" class="chart"></div>
+        <div id="chart3" class="chart"></div>
+        <div id="chart4" class="chart"></div>
+        <button onclick="showPage('introduction')">Previous</button>
+        <button onclick="showPage('charts2')">Next</button>
+    </div>
 
-  <!-- Charts Page 2 -->
-  <div class="page" id="charts2" style="display: none;">
-    <h1>Vehicle Sales - Charts 2</h1>
-    <p>This page shows various bar charts based on the Vehicle Sales dataset.</p>
-    <label for="yearSelect2">Select Year:</label>
-    <select id="yearSelect2" onchange="updateCharts()">
-      <option value="all">All</option>
-    </select>
-    <div id="chart5"></div>
-    <div id="chart6"></div>
-    <div id="chart7"></div>
-    <button onclick="showPage('charts1')">Previous</button>
-    <button onclick="showPage('conclusion')">Go to Conclusion</button>
-  </div>
+    <div class="page" id="charts2">
+        <h2>Bar Charts</h2>
+        <label for="yearSelect2">Select Year:</label>
+        <select id="yearSelect2" onchange="updateCharts()"></select>
+        <div id="chart5" class="chart"></div>
+        <div id="chart6" class="chart"></div>
+        <div id="chart7" class="chart"></div>
+        <button onclick="showPage('charts1')">Previous</button>
+        <button onclick="showPage('conclusion')">Next</button>
+    </div>
 
-  <!-- Conclusion Page -->
-  <div class="page" id="conclusion" style="display: none;">
-    <h1>Conclusion</h1>
-    <p>This is the conclusion of the Vehicle Sales and Market Trends analysis.</p>
-    <button onclick="showPage('charts2')">Previous</button>
-  </div>
+    <div class="page" id="conclusion">
+        <h2>Conclusion</h2>
+        <p>This concludes the data visualization of vehicle sales and market trends. Thank you for exploring the data with us!</p>
+        <button onclick="showPage('charts2')">Previous</button>
+    </div>
+
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
