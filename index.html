@@ -3,30 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>D3.js Example</title>
+  <title>Vehicle Sales and Market Trends</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="introduction" class="page">
-    <h1>Welcome to the D3.js Example</h1>
-    <p>This is an introduction to our example website using D3.js for data visualization. Navigate through the pages to see different examples of what you can do with D3.js.</p>
-    <p>CS416</p>
-    <button onclick="showPage('charts')">Go to Sample Charts</button>
+  <!-- Introduction Page -->
+  <div class="page" id="introduction">
+    <h1>Vehicle Sales and Market Trends</h1>
+    <p>Welcome to the Vehicle Sales and Market Trends dataset overview. This website provides insights into the sales transactions of various vehicles, including year, make, model, trim, body type, transmission type, VIN, state of registration, condition rating, odometer reading, exterior and interior colors, seller information, MMR values, selling prices, and sale dates.</p>
+    <button onclick="showPage('charts1')">Go to Sample Charts 1</button>
   </div>
 
-  <div id="charts" class="page" style="display:none;">
-    <h1>Sample Charts</h1>
-    <p>Below is a simple bar chart created using D3.js. This is just a basic example to demonstrate how you can visualize data with D3.</p>
-    <div id="chart"></div>
+  <!-- Charts Page 1 -->
+  <div class="page" id="charts1" style="display: none;">
+    <h1>Vehicle Sales - Charts 1</h1>
+    <p>This page shows various charts and graphs based on the Vehicle Sales dataset.</p>
+    <div id="chart1"></div>
     <button onclick="showPage('introduction')">Previous</button>
+    <button onclick="showPage('charts2')">Go to Sample Charts 2</button>
+  </div>
+
+  <!-- Charts Page 2 -->
+  <div class="page" id="charts2" style="display: none;">
+    <h1>Vehicle Sales - Charts 2</h1>
+    <p>This page shows additional charts and graphs based on the Vehicle Sales dataset.</p>
+    <div id="chart2"></div>
+    <button onclick="showPage('charts1')">Previous</button>
     <button onclick="showPage('conclusion')">Go to Conclusion</button>
   </div>
 
-  <div id="conclusion" class="page" style="display:none;">
+  <!-- Conclusion Page -->
+  <div class="page" id="conclusion" style="display: none;">
     <h1>Conclusion</h1>
-    <p>Thank you for visiting our example website. We hope you found the examples helpful and inspiring for your own projects with D3.js.</p>
-    <button onclick="showPage('charts')">Previous</button>
-    <button onclick="showPage('introduction')">Go to Introduction</button>
+    <p>Thank you for exploring the Vehicle Sales and Market Trends dataset. We hope you found the insights valuable.</p>
+    <button onclick="showPage('charts2')">Previous</button>
   </div>
 
   <script src="https://d3js.org/d3.v7.min.js"></script>
