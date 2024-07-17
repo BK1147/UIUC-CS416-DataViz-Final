@@ -20,23 +20,6 @@ function showPage(pageId) {
   }
 }
 
-// Function to create pie charts
-async function createPieCharts() {
-  const data = await fetchData();
-  createPieChart(data, 'year', '#chart1');
-  createPieChart(data, 'make', '#chart2');
-  // createPieChart(data, 'body', '#chart3');
-  // createPieChart(data, 'transmission', '#chart4');
-}
-
-// Function to create bar charts
-async function createBarCharts() {
-  const data = await fetchData();
-  createBarChart(data, 'year', 'sellingprice', '#chart5');
-  // createBarChart(data, 'odometer', 'sellingprice', '#chart6');
-  // createBarChart(data, 'make', 'sellingprice', '#chart7');
-}
-
 // Function to fetch data asynchronously
 async function fetchData() {
   const response = await fetch('data/car_prices_subset.csv');
@@ -44,9 +27,19 @@ async function fetchData() {
   return d3.csvParse(data);
 }
 
+// Function to create pie charts
+async function createPieCharts() {
+  const data = await fetchData();
+  
+  createPieChart(data, 'year', '#chart1');
+  createPieChart(data, 'make', '#chart2');
+  createPieChart(data, 'body', '#chart3');
+  createPieChart(data, 'transmission', '#chart4');
+}
+
 // Function to create a pie chart
 function createPieChart(data, category, elementId) {
-  const counts = d3.rollup(data, v => v.length, d => d[category]);
+  const counts = d3.rollups(data, v => v.length, d => d[category]);
   const pieData = Array.from(counts, ([key, value]) => ({ key, value }));
 
   const width = 300;
@@ -56,6 +49,7 @@ function createPieChart(data, category, elementId) {
   const color = d3.scaleOrdinal(d3.schemeCategory10);
 
   const svg = d3.select(elementId)
+    .html('')  // Clear existing content
     .append('svg')
     .attr('width', width)
     .attr('height', height)
@@ -65,12 +59,21 @@ function createPieChart(data, category, elementId) {
   const pie = d3.pie().value(d => d.value);
   const arc = d3.arc().innerRadius(0).outerRadius(radius);
 
-  const path = svg.selectAll('path')
+  svg.selectAll('path')
     .data(pie(pieData))
     .enter()
     .append('path')
     .attr('d', arc)
     .attr('fill', d => color(d.data.key));
+}
+
+// Function to create bar charts
+async function createBarCharts() {
+  const data = await fetchData();
+  
+  createBarChart(data, 'year', 'sellingprice', '#chart5');
+  createBarChart(data, 'odometer', 'sellingprice', '#chart6');
+  createBarChart(data, 'make', 'sellingprice', '#chart7');
 }
 
 // Function to create a bar chart
@@ -80,6 +83,7 @@ function createBarChart(data, category, value, elementId) {
   const margin = { top: 20, right: 20, bottom: 30, left: 40 };
 
   const svg = d3.select(elementId)
+    .html('')  // Clear existing content
     .append('svg')
     .attr('width', width + margin.left + margin.right)
     .attr('height', height + margin.top + margin.bottom)
@@ -99,7 +103,7 @@ function createBarChart(data, category, value, elementId) {
   svg.append('g')
     .attr('class', 'x-axis')
     .attr('transform', `translate(0, ${height})`)
-    .call(d3.axisBottom(x));
+    .call(d3.axisBottom(x).tickFormat(d3.format('d')));
 
   svg.append('g')
     .attr('class', 'y-axis')
