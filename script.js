@@ -26,7 +26,7 @@ function showPage(pageId) {
 
 // Function to fetch data asynchronously
 async function fetchData() {
-  const response = await fetch('data/car_prices.csv');
+  const response = await fetch('data/car_prices_subset.csv');
   const data = await response.text();
   globalData = d3.csvParse(data);
   return globalData;
