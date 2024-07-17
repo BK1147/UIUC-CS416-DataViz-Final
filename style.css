@@ -33,3 +33,9 @@ button {
   width: 600px;
   height: 400px;
 }
+
+.loading {
+  text-align: center;
+  font-size: 18px;
+  color: #666;
+}
