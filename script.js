@@ -13,31 +13,31 @@ function showPage(pageId) {
   }
 
   // If the charts page is selected, create the chart
-  if (pageId === 'charts') {
-      updateYearSelect();
+  if (pageId === 'charts1') {
+      updateYearSelect('yearSelect');
       createPieCharts();
   }
-  if (pageId === 'bar') {
+  if (pageId === 'charts2') {
+      updateYearSelect('yearSelect2');
       createBarCharts();
-  }
-  if (pageId === 'scatter') {
       createScatterPlot();
   }
 }
 
 // Fetch data
 async function fetchData() {
-  const response = await fetch('data/car_prices_subset.csv');
+  const response = await fetch('data/car_prices.csv');
   const text = await response.text();
   const data = d3.csvParse(text);
   return data;
 }
 
 // Function to update year selection dropdown
-function updateYearSelect() {
+function updateYearSelect(selectId) {
   fetchData().then(data => {
       const years = Array.from(new Set(data.map(d => d.year)));
-      const yearSelect = document.getElementById('year-select');
+      const yearSelect = document.getElementById(selectId);
+      yearSelect.innerHTML = '<option value="all">All</option>'; // Add "All" option
       years.forEach(year => {
           const option = document.createElement('option');
           option.value = year;
@@ -49,7 +49,10 @@ function updateYearSelect() {
 
 // Function to update charts based on selected year
 function updateCharts() {
-  const selectedYear = document.getElementById('year-select').value;
+  const selectedYear1 = document.getElementById('yearSelect').value;
+  const selectedYear2 = document.getElementById('yearSelect2').value;
+  const selectedYear = selectedYear1 !== 'all' ? selectedYear1 : selectedYear2;
+
   fetchData().then(data => {
       const filteredData = selectedYear === 'all' ? data : data.filter(d => d.year === selectedYear);
       createPieCharts(filteredData);
@@ -229,3 +232,8 @@ function createScatter(data, xCategory, yCategory, valueCategory, elementId) {
       .attr('r', 5)
       .attr('fill', d => color(d[valueCategory]));
 }
+
+// Initialize the page
+document.addEventListener('DOMContentLoaded', () => {
+  showPage('introduction');
+});
