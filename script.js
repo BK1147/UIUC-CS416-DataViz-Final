@@ -21,6 +21,7 @@ function showPage(pageId) {
   } else if (pageId === 'charts2') {
     updateYearSelect('yearSelect2');
     createBarCharts();
+    createScatterPlot();
   }
 }
 
@@ -59,8 +60,10 @@ function updateCharts() {
 
   if (selectedYear2 === 'all') {
     createBarCharts(globalData);
+    createScatterPlot(globalData);
   } else {
     createBarCharts(globalData.filter(d => d.year === selectedYear2));
+    createScatterPlot(globalData.filter(d => d.year === selectedYear2));
   }
 }
 
@@ -106,6 +109,12 @@ function createPieChart(data, category, elementId) {
   g.append('path')
     .attr('d', arc)
     .attr('fill', d => color(d.data.key));
+
+  g.append('text')
+    .attr('transform', d => `translate(${arc.centroid(d)})`)
+    .attr('dy', '0.35em')
+    .style('text-anchor', 'middle')
+    .text(d => `${d.data.key}: ${d.data.value}`);
 }
 
 // Function to create bar charts
@@ -115,8 +124,6 @@ async function createBarCharts(data = null) {
   }
 
   createBarChart(data, 'year', 'sellingprice', '#chart5');
-  createBarChart(data, 'odometer', 'sellingprice', '#chart6');
-  createBarChart(data, 'make', 'sellingprice', '#chart7');
 }
 
 // Function to create a bar chart
@@ -146,7 +153,7 @@ function createBarChart(data, category, value, elementId) {
   svg.append('g')
     .attr('class', 'x-axis')
     .attr('transform', `translate(0, ${height})`)
-    .call(d3.axisBottom(x).tickFormat(d3.format('d')))
+    .call(d3.axisBottom(x))
     .selectAll('text')
     .attr('transform', 'rotate(-45)')
     .style('text-anchor', 'end');
@@ -157,8 +164,7 @@ function createBarChart(data, category, value, elementId) {
 
   svg.selectAll('.bar')
     .data(data)
-    .enter()
-    .append('rect')
+    .enter().append('rect')
     .attr('class', 'bar')
     .attr('x', d => x(d[category]))
     .attr('y', d => y(d[value]))
@@ -167,8 +173,59 @@ function createBarChart(data, category, value, elementId) {
     .attr('fill', 'steelblue');
 }
 
-// Initialize the first page
-document.addEventListener('DOMContentLoaded', async () => {
-  await fetchData();
-  showPage('introduction');
-});
+// Function to create scatter plot
+async function createScatterPlot(data = null) {
+  if (!data) {
+    data = await fetchData();
+  }
+
+  createScatter(data, 'year', 'odometer', 'sellingprice', '#chart6');
+}
+
+// Function to create a scatter plot
+function createScatter(data, xCategory, yCategory, valueCategory, elementId) {
+  const width = 500;
+  const height = 300;
+  const margin = { top: 20, right: 20, bottom: 50, left: 50 };
+
+  const svg = d3.select(elementId)
+    .html('')  // Clear existing content
+    .append('svg')
+    .attr('width', width + margin.left + margin.right)
+    .attr('height', height + margin.top + margin.bottom)
+    .append('g')
+    .attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+  const x = d3.scaleLinear()
+    .domain(d3.extent(data, d => +d[xCategory]))
+    .range([0, width]);
+
+  const y = d3.scaleLinear()
+    .domain(d3.extent(data, d => +d[yCategory]))
+    .range([height, 0]);
+
+  const color = d3.scaleSequential(d3.extent(data, d => +d[valueCategory]), d3.interpolateViridis);
+
+  svg.append('g')
+    .attr('class', 'x-axis')
+    .attr('transform', `translate(0, ${height})`)
+    .call(d3.axisBottom(x));
+
+  svg.append('g')
+    .attr('class', 'y-axis')
+    .call(d3.axisLeft(y));
+
+  svg.selectAll('.dot')
+    .data(data)
+    .enter().append('circle')
+    .attr('class', 'dot')
+    .attr('cx', d => x(d[xCategory]))
+    .attr('cy', d => y(d[yCategory]))
+    .attr('r', 3)
+    .attr('fill', d => color(d[valueCategory]))
+    .append('title')
+    .text(d => `Year: ${d.year}\nOdometer: ${d.odometer}\nSelling Price: ${d.sellingprice}`);
+}
+
+// Fetch data and show the introduction page initially
+fetchData().then(() => showPage('introduction'));
