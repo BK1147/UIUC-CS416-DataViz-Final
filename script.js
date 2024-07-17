@@ -116,7 +116,7 @@ async function createCharts2() {
 
 // Function to fetch data asynchronously
 async function fetchData() {
-  const response = await fetch('data/car_prices.csv');
+  const response = await fetch('data/car_prices_subsetz.csv');
   const data = await response.text();
   return d3.csvParse(data);
 }
