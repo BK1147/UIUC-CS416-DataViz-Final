@@ -20,6 +20,10 @@
   <div class="page" id="charts1" style="display: none;">
     <h1>Vehicle Sales - Charts 1</h1>
     <p>This page shows various pie charts based on the Vehicle Sales dataset.</p>
+    <label for="yearSelect">Select Year:</label>
+    <select id="yearSelect" onchange="updateCharts()">
+      <option value="all">All</option>
+    </select>
     <div id="chart1"></div>
     <div id="chart2"></div>
     <div id="chart3"></div>
@@ -32,6 +36,10 @@
   <div class="page" id="charts2" style="display: none;">
     <h1>Vehicle Sales - Charts 2</h1>
     <p>This page shows various bar charts based on the Vehicle Sales dataset.</p>
+    <label for="yearSelect2">Select Year:</label>
+    <select id="yearSelect2" onchange="updateCharts()">
+      <option value="all">All</option>
+    </select>
     <div id="chart5"></div>
     <div id="chart6"></div>
     <div id="chart7"></div>

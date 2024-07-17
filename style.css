@@ -28,6 +28,12 @@ button {
   cursor: pointer;
 }
 
+select {
+  margin: 10px 0;
+  padding: 5px;
+  font-size: 16px;
+}
+
 #chart1, #chart2, #chart3, #chart4, #chart5, #chart6, #chart7 {
   margin-top: 20px;
 }

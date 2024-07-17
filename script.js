@@ -1,3 +1,5 @@
+let globalData = [];
+
 // Function to show the correct page
 function showPage(pageId) {
   // Hide all pages
@@ -14,23 +16,60 @@ function showPage(pageId) {
 
   // If the charts page is selected, create the charts
   if (pageId === 'charts1') {
+    updateYearSelect('yearSelect');
     createPieCharts();
   } else if (pageId === 'charts2') {
+    updateYearSelect('yearSelect2');
     createBarCharts();
   }
 }
 
 // Function to fetch data asynchronously
 async function fetchData() {
-  const response = await fetch('data/car_prices_subset.csv');
+  const response = await fetch('data/car_prices.csv');
   const data = await response.text();
-  return d3.csvParse(data);
+  globalData = d3.csvParse(data);
+  return globalData;
+}
+
+// Function to update year select options
+function updateYearSelect(selectId) {
+  const yearSelect = document.getElementById(selectId);
+  const years = Array.from(new Set(globalData.map(d => d.year)));
+  years.sort();
+  yearSelect.innerHTML = '<option value="all">All</option>';
+  years.forEach(year => {
+    const option = document.createElement('option');
+    option.value = year;
+    option.text = year;
+    yearSelect.appendChild(option);
+  });
+}
+
+// Function to update charts based on selected year
+function updateCharts() {
+  const selectedYear1 = document.getElementById('yearSelect').value;
+  const selectedYear2 = document.getElementById('yearSelect2').value;
+  
+  if (selectedYear1 === 'all') {
+    createPieCharts(globalData);
+  } else {
+    createPieCharts(globalData.filter(d => d.year === selectedYear1));
+  }
+
+  if (selectedYear2 === 'all') {
+    createBarCharts(globalData);
+  } else {
+    createBarCharts(globalData.filter(d => d.year === selectedYear2));
+  }
 }
 
 // Function to create pie charts
-async function createPieCharts() {
-  const data = await fetchData();
-  
+async function createPieCharts(data = null) {
+  if (!data) {
+    data = await fetchData();
+  }
+
   createPieChart(data, 'year', '#chart1');
   createPieChart(data, 'make', '#chart2');
   createPieChart(data, 'body', '#chart3');
@@ -68,9 +107,11 @@ function createPieChart(data, category, elementId) {
 }
 
 // Function to create bar charts
-async function createBarCharts() {
-  const data = await fetchData();
-  
+async function createBarCharts(data = null) {
+  if (!data) {
+    data = await fetchData();
+  }
+
   createBarChart(data, 'year', 'sellingprice', '#chart5');
   createBarChart(data, 'odometer', 'sellingprice', '#chart6');
   createBarChart(data, 'make', 'sellingprice', '#chart7');
@@ -122,6 +163,7 @@ function createBarChart(data, category, value, elementId) {
 }
 
 // Initialize the first page
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  await fetchData();
   showPage('introduction');
 });
