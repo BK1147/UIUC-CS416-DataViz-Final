@@ -26,7 +26,7 @@ function showPage(pageId) {
 
 // Function to fetch data asynchronously
 async function fetchData() {
-  const response = await fetch('data/car_prices_subset.csv');
+  const response = await fetch('data/car_prices.csv');
   const data = await response.text();
   globalData = d3.csvParse(data);
   return globalData;
@@ -97,13 +97,21 @@ function createPieChart(data, category, elementId) {
 
   const pie = d3.pie().value(d => d.value);
   const arc = d3.arc().innerRadius(0).outerRadius(radius);
+  const labelArc = d3.arc().innerRadius(radius - 40).outerRadius(radius - 40);
 
-  svg.selectAll('path')
+  const g = svg.selectAll('.arc')
     .data(pie(pieData))
-    .enter()
-    .append('path')
+    .enter().append('g')
+    .attr('class', 'arc');
+
+  g.append('path')
     .attr('d', arc)
     .attr('fill', d => color(d.data.key));
+
+  g.append('text')
+    .attr('transform', d => `translate(${labelArc.centroid(d)})`)
+    .attr('dy', '0.35em')
+    .text(d => d.data.key);
 }
 
 // Function to create bar charts
@@ -121,7 +129,7 @@ async function createBarCharts(data = null) {
 function createBarChart(data, category, value, elementId) {
   const width = 500;
   const height = 300;
-  const margin = { top: 20, right: 20, bottom: 30, left: 40 };
+  const margin = { top: 20, right: 20, bottom: 50, left: 50 };
 
   const svg = d3.select(elementId)
     .html('')  // Clear existing content
@@ -144,7 +152,10 @@ function createBarChart(data, category, value, elementId) {
   svg.append('g')
     .attr('class', 'x-axis')
     .attr('transform', `translate(0, ${height})`)
-    .call(d3.axisBottom(x).tickFormat(d3.format('d')));
+    .call(d3.axisBottom(x).tickFormat(d3.format('d')))
+    .selectAll('text')
+    .attr('transform', 'rotate(-45)')
+    .style('text-anchor', 'end');
 
   svg.append('g')
     .attr('class', 'y-axis')
@@ -160,6 +171,17 @@ function createBarChart(data, category, value, elementId) {
     .attr('width', x.bandwidth())
     .attr('height', d => height - y(d[value]))
     .attr('fill', 'steelblue');
+
+  // Adding labels
+  svg.selectAll('.label')
+    .data(data)
+    .enter()
+    .append('text')
+    .attr('class', 'label')
+    .attr('x', d => x(d[category]) + x.bandwidth() / 2)
+    .attr('y', d => y(d[value]) - 5)
+    .attr('text-anchor', 'middle')
+    .text(d => d[value]);
 }
 
 // Initialize the first page
