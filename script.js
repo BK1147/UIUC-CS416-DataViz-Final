@@ -14,98 +14,103 @@ function showPage(pageId) {
 
   // If the charts page is selected, create the charts
   if (pageId === 'charts1') {
-    createChart1();
+    createCharts1();
   } else if (pageId === 'charts2') {
-    createChart2();
+    createCharts2();
   }
 }
 
-// Function to create the first chart
-function createChart1() {
+// Function to create pie charts for the first charts page
+function createCharts1() {
   d3.csv('data/car_prices.csv').then(data => {
-    // Create a sample bar chart for demonstration
-    const svg = d3.select('#chart1').append('svg')
-      .attr('width', 600)
-      .attr('height', 400);
+    // Helper function to create pie chart
+    function createPieChart(data, key, chartId) {
+      const svg = d3.select(chartId).append('svg')
+        .attr('width', 600)
+        .attr('height', 400)
+        .append('g')
+        .attr('transform', 'translate(300,200)');
 
-    const margin = { top: 20, right: 30, bottom: 40, left: 40 };
-    const width = +svg.attr('width') - margin.left - margin.right;
-    const height = +svg.attr('height') - margin.top - margin.bottom;
+      const radius = Math.min(600, 400) / 2;
+      const pie = d3.pie().value(d => d.value);
+      const arc = d3.arc().innerRadius(0).outerRadius(radius);
 
-    const g = svg.append('g')
-      .attr('transform', `translate(${margin.left},${margin.top})`);
+      const dataMap = d3.nest()
+        .key(d => d[key])
+        .rollup(leaves => leaves.length)
+        .entries(data)
+        .map(d => ({label: d.key, value: d.value}));
 
-    const x = d3.scaleBand().rangeRound([0, width]).padding(0.1);
-    const y = d3.scaleLinear().rangeRound([height, 0]);
+      const color = d3.scaleOrdinal(d3.schemeCategory10);
 
-    x.domain(data.map(d => d.make));
-    y.domain([0, d3.max(data, d => +d.sellingprice)]);
+      const arcs = svg.selectAll('.arc')
+        .data(pie(dataMap))
+        .enter().append('g')
+        .attr('class', 'arc');
 
-    g.append('g')
-      .attr('class', 'axis axis--x')
-      .attr('transform', `translate(0,${height})`)
-      .call(d3.axisBottom(x));
+      arcs.append('path')
+        .attr('d', arc)
+        .attr('fill', d => color(d.data.label));
 
-    g.append('g')
-      .attr('class', 'axis axis--y')
-      .call(d3.axisLeft(y).ticks(10, 's'));
+      arcs.append('text')
+        .attr('transform', d => `translate(${arc.centroid(d)})`)
+        .attr('dy', '0.35em')
+        .text(d => d.data.label);
+    }
 
-    g.selectAll('.bar')
-      .data(data)
-      .enter().append('rect')
-      .attr('class', 'bar')
-      .attr('x', d => x(d.make))
-      .attr('y', d => y(+d.sellingprice))
-      .attr('width', x.bandwidth())
-      .attr('height', d => height - y(+d.sellingprice));
+    // Create pie charts
+    createPieChart(data, 'year', '#chart1');
+    createPieChart(data, 'make', '#chart2');
+    createPieChart(data, 'body', '#chart3');
+    createPieChart(data, 'transmission', '#chart4');
   });
 }
 
-// Function to create the second chart
-function createChart2() {
+// Function to create bar charts for the second charts page
+function createCharts2() {
   d3.csv('data/car_prices.csv').then(data => {
-    // Create a sample line chart for demonstration
-    const svg = d3.select('#chart2').append('svg')
-      .attr('width', 600)
-      .attr('height', 400);
+    // Helper function to create bar chart
+    function createBarChart(data, xKey, yKey, chartId) {
+      const svg = d3.select(chartId).append('svg')
+        .attr('width', 600)
+        .attr('height', 400);
 
-    const margin = { top: 20, right: 30, bottom: 40, left: 40 };
-    const width = +svg.attr('width') - margin.left - margin.right;
-    const height = +svg.attr('height') - margin.top - margin.bottom;
+      const margin = { top: 20, right: 30, bottom: 40, left: 40 };
+      const width = +svg.attr('width') - margin.left - margin.right;
+      const height = +svg.attr('height') - margin.top - margin.bottom;
 
-    const g = svg.append('g')
-      .attr('transform', `translate(${margin.left},${margin.top})`);
+      const g = svg.append('g')
+        .attr('transform', `translate(${margin.left},${margin.top})`);
 
-    const x = d3.scaleTime().rangeRound([0, width]);
-    const y = d3.scaleLinear().rangeRound([height, 0]);
+      const x = d3.scaleBand().rangeRound([0, width]).padding(0.1);
+      const y = d3.scaleLinear().rangeRound([height, 0]);
 
-    const parseTime = d3.timeParse('%a %b %d %Y %H:%M:%S GMT%Z (PST)');
+      x.domain(data.map(d => d[xKey]));
+      y.domain([0, d3.max(data, d => +d[yKey])]);
 
-    data.forEach(d => {
-      d.saledate = parseTime(d.saledate);
-      d.sellingprice = +d.sellingprice;
-    });
+      g.append('g')
+        .attr('class', 'axis axis--x')
+        .attr('transform', `translate(0,${height})`)
+        .call(d3.axisBottom(x));
 
-    x.domain(d3.extent(data, d => d.saledate));
-    y.domain([0, d3.max(data, d => d.sellingprice)]);
+      g.append('g')
+        .attr('class', 'axis axis--y')
+        .call(d3.axisLeft(y).ticks(10, 's'));
 
-    g.append('g')
-      .attr('class', 'axis axis--x')
-      .attr('transform', `translate(0,${height})`)
-      .call(d3.axisBottom(x));
+      g.selectAll('.bar')
+        .data(data)
+        .enter().append('rect')
+        .attr('class', 'bar')
+        .attr('x', d => x(d[xKey]))
+        .attr('y', d => y(+d[yKey]))
+        .attr('width', x.bandwidth())
+        .attr('height', d => height - y(+d[yKey]));
+    }
 
-    g.append('g')
-      .attr('class', 'axis axis--y')
-      .call(d3.axisLeft(y).ticks(10, 's'));
-
-    const line = d3.line()
-      .x(d => x(d.saledate))
-      .y(d => y(d.sellingprice));
-
-    g.append('path')
-      .datum(data)
-      .attr('class', 'line')
-      .attr('d', line);
+    // Create bar charts
+    createBarChart(data, 'year', 'sellingprice', '#chart5');
+    createBarChart(data, 'odometer', 'sellingprice', '#chart6');
+    createBarChart(data, 'make', 'sellingprice', '#chart7');
   });
 }
 

@@ -27,3 +27,9 @@ button {
   font-size: 16px;
   cursor: pointer;
 }
+
+#chart1, #chart2, #chart3, #chart4, #chart5, #chart6, #chart7 {
+  margin: 20px auto;
+  width: 600px;
+  height: 400px;
+}
