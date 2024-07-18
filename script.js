@@ -101,6 +101,9 @@ function createBarChart(data, category, elementId) {
     .nice()
     .range([height, 0]);
 
+  // Define the color scale
+  const color = d3.scaleOrdinal(d3.schemeCategory10);
+
   svg.append('g')
     .attr('class', 'x-axis')
     .attr('transform', `translate(0, ${height})`)
@@ -121,17 +124,7 @@ function createBarChart(data, category, elementId) {
     .attr('y', d => y(d.value))
     .attr('width', x.bandwidth())
     .attr('height', d => height - y(d.value))
-    .attr('fill', 'steelblue');
-
-  svg.selectAll('.label')
-    .data(barData)
-    .enter().append('text')
-    .attr('class', 'label')
-    .attr('x', d => x(d.key) + x.bandwidth() / 2)
-    .attr('y', d => y(d.value) - 5)
-    .attr('dy', '.75em')
-    .style('text-anchor', 'middle')
-    .text(d => d.value);
+    .attr('fill', d => color(d.key)); // Use the color scale
 }
 
 // Function to create line charts
