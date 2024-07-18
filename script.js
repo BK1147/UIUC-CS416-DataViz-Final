@@ -114,7 +114,7 @@ function createBarChart(data, category, elementId) {
 
   svg.append('g')
     .attr('class', 'y-axis')
-    // .call(d3.axisLeft(y));
+    .call(d3.axisLeft(y));
 
   svg.selectAll('.bar')
     .data(barData)
