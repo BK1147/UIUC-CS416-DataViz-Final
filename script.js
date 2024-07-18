@@ -121,7 +121,7 @@ async function createBarCharts(data = null) {
     data = await fetchData();
   }
 
-  createBarChart(data, 'year', 'sellingprice', '#chart5');
+  createBarChart(data, 'make', 'sellingprice', '#chart5');
 }
 
 // Function to create a bar chart
