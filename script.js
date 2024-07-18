@@ -73,10 +73,8 @@ async function createPieCharts(data = null) {
     data = await fetchData();
   }
 
-  createPieChart(data, 'year', '#chart1');
-  createPieChart(data, 'make', '#chart2');
-  createPieChart(data, 'body', '#chart3');
-  createPieChart(data, 'transmission', '#chart4');
+  createPieChart(data, 'make', '#chart1');
+  createPieChart(data, 'body', '#chart2');
 }
 
 // Function to create a pie chart
@@ -171,60 +169,6 @@ function createBarChart(data, category, value, elementId) {
     .attr('width', x.bandwidth())
     .attr('height', d => height - y(d[value]))
     .attr('fill', 'steelblue');
-}
-
-// Function to create scatter plot
-async function createScatterPlot(data = null) {
-  if (!data) {
-    data = await fetchData();
-  }
-
-  createScatter(data, 'year', 'odometer', 'sellingprice', '#chart6');
-}
-
-// Function to create a scatter plot
-function createScatter(data, xCategory, yCategory, valueCategory, elementId) {
-  const width = 500;
-  const height = 300;
-  const margin = { top: 20, right: 20, bottom: 50, left: 50 };
-
-  const svg = d3.select(elementId)
-    .html('')  // Clear existing content
-    .append('svg')
-    .attr('width', width + margin.left + margin.right)
-    .attr('height', height + margin.top + margin.bottom)
-    .append('g')
-    .attr('transform', `translate(${margin.left}, ${margin.top})`);
-
-  const x = d3.scaleLinear()
-    .domain(d3.extent(data, d => +d[xCategory]))
-    .range([0, width]);
-
-  const y = d3.scaleLinear()
-    .domain(d3.extent(data, d => +d[yCategory]))
-    .range([height, 0]);
-
-  const color = d3.scaleSequential(d3.extent(data, d => +d[valueCategory]), d3.interpolateViridis);
-
-  svg.append('g')
-    .attr('class', 'x-axis')
-    .attr('transform', `translate(0, ${height})`)
-    .call(d3.axisBottom(x));
-
-  svg.append('g')
-    .attr('class', 'y-axis')
-    .call(d3.axisLeft(y));
-
-  svg.selectAll('.dot')
-    .data(data)
-    .enter().append('circle')
-    .attr('class', 'dot')
-    .attr('cx', d => x(d[xCategory]))
-    .attr('cy', d => y(d[yCategory]))
-    .attr('r', 3)
-    .attr('fill', d => color(d[valueCategory]))
-    .append('title')
-    .text(d => `Year: ${d.year}\nOdometer: ${d.odometer}\nSelling Price: ${d.sellingprice}`);
 }
 
 // Fetch data and show the introduction page initially
