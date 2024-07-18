@@ -20,8 +20,7 @@ function showPage(pageId) {
     createPieCharts();
   } else if (pageId === 'charts2') {
     updateYearSelect('yearSelect2');
-    createBarCharts();
-    createScatterPlot();
+    createLineCharts();
   }
 }
 
@@ -59,11 +58,10 @@ function updateCharts() {
   }
 
   if (selectedYear2 === 'all') {
-    createBarCharts(globalData);
-    createScatterPlot(globalData);
+    createLineCharts(globalData);
+
   } else {
-    createBarCharts(globalData.filter(d => d.year === selectedYear2));
-    createScatterPlot(globalData.filter(d => d.year === selectedYear2));
+    createLineCharts(globalData.filter(d => d.year === selectedYear2));
   }
 }
 
@@ -115,17 +113,83 @@ function createPieChart(data, category, elementId) {
     .text(d => `${d.data.key}: ${d.data.value}`);
 }
 
-// Function to create bar charts
-async function createBarCharts(data = null) {
+// // Function to create bar charts
+// async function createBarCharts(data = null) {
+//   if (!data) {
+//     data = await fetchData();
+//   }
+
+//   createBarChart(data, 'make', 'sellingprice', '#chart5');
+// }
+
+// // Function to create a bar chart
+// function createBarChart(data, category, value, elementId) {
+//   const width = 500;
+//   const height = 300;
+//   const margin = { top: 20, right: 20, bottom: 50, left: 50 };
+
+//   const svg = d3.select(elementId)
+//     .html('')  // Clear existing content
+//     .append('svg')
+//     .attr('width', width + margin.left + margin.right)
+//     .attr('height', height + margin.top + margin.bottom)
+//     .append('g')
+//     .attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+//   const x = d3.scaleBand()
+//     .domain(data.map(d => d[category]))
+//     .range([0, width])
+//     .padding(0.1);
+
+//   const y = d3.scaleLinear()
+//     .domain([0, d3.max(data, d => +d[value])])
+//     .nice()
+//     .range([height, 0]);
+
+//   svg.append('g')
+//     .attr('class', 'x-axis')
+//     .attr('transform', `translate(0, ${height})`)
+//     .call(d3.axisBottom(x))
+//     .selectAll('text')
+//     .attr('transform', 'rotate(-45)')
+//     .style('text-anchor', 'end');
+
+//   svg.append('g')
+//     .attr('class', 'y-axis')
+//     .call(d3.axisLeft(y));
+
+//   svg.selectAll('.bar')
+//     .data(data)
+//     .enter().append('rect')
+//     .attr('class', 'bar')
+//     .attr('x', d => x(d[category]))
+//     .attr('y', d => y(d[value]))
+//     .attr('width', x.bandwidth())
+//     .attr('height', d => height - y(d[value]))
+//     .attr('fill', 'steelblue');
+// }
+
+// Function to create line charts
+async function createLineCharts(data = null) {
   if (!data) {
     data = await fetchData();
   }
 
-  createBarChart(data, 'make', 'sellingprice', '#chart5');
+  createLineChart(data, 'make', 'sellingprice', '#chart5');
 }
 
-// Function to create a bar chart
-function createBarChart(data, category, value, elementId) {
+// Function to create a line chart
+function createLineChart(data, category, value, elementId) {
+  // Group data by category and calculate the average selling price
+  const groupedData = d3.rollups(
+    data,
+    v => d3.mean(v, d => +d[value]),
+    d => d[category]
+  ).map(([key, value]) => ({ category: key, value }));
+
+  // Sort data by category
+  groupedData.sort((a, b) => d3.ascending(a.category, b.category));
+
   const width = 500;
   const height = 300;
   const margin = { top: 20, right: 20, bottom: 50, left: 50 };
@@ -139,15 +203,16 @@ function createBarChart(data, category, value, elementId) {
     .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
   const x = d3.scaleBand()
-    .domain(data.map(d => d[category]))
+    .domain(groupedData.map(d => d.category))
     .range([0, width])
     .padding(0.1);
 
   const y = d3.scaleLinear()
-    .domain([0, d3.max(data, d => +d[value])])
+    .domain([0, d3.max(groupedData, d => d.value)])
     .nice()
     .range([height, 0]);
 
+  // Append the x-axis
   svg.append('g')
     .attr('class', 'x-axis')
     .attr('transform', `translate(0, ${height})`)
@@ -156,18 +221,33 @@ function createBarChart(data, category, value, elementId) {
     .attr('transform', 'rotate(-45)')
     .style('text-anchor', 'end');
 
+  // Append the y-axis
   svg.append('g')
     .attr('class', 'y-axis')
     .call(d3.axisLeft(y));
 
-  svg.selectAll('.bar')
-    .data(data)
-    .enter().append('rect')
-    .attr('class', 'bar')
-    .attr('x', d => x(d[category]))
-    .attr('y', d => y(d[value]))
-    .attr('width', x.bandwidth())
-    .attr('height', d => height - y(d[value]))
+  // Line generator
+  const line = d3.line()
+    .x(d => x(d.category) + x.bandwidth() / 2)
+    .y(d => y(d.value));
+
+  // Append the line path
+  svg.append('path')
+    .datum(groupedData)
+    .attr('class', 'line')
+    .attr('d', line)
+    .attr('fill', 'none')
+    .attr('stroke', 'steelblue')
+    .attr('stroke-width', 1.5);
+
+  // Append circles at data points
+  svg.selectAll('.dot')
+    .data(groupedData)
+    .enter().append('circle')
+    .attr('class', 'dot')
+    .attr('cx', d => x(d.category) + x.bandwidth() / 2)
+    .attr('cy', d => y(d.value))
+    .attr('r', 3)
     .attr('fill', 'steelblue');
 }
 
