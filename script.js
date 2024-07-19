@@ -133,7 +133,8 @@ async function createLineCharts(data = null) {
     data = await fetchData();
   }
 
-  createLineChart(data, 'make', 'sellingprice', '#chart5');
+  // createLineChart(data, 'make', 'sellingprice', '#chart5');
+  createLineChart(data, 'odometer', 'sellingprice', '#chart5');
 }
 
 // // Function to create a line chart
