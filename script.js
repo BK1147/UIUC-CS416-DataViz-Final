@@ -1,79 +1,3 @@
-let globalData = [];
-
-// Function to show the correct page
-function showPage(pageId) {
-  // Hide all pages
-  const pages = document.querySelectorAll('.page');
-  pages.forEach(page => {
-    page.style.display = 'none';
-  });
-
-  // Show the selected page
-  const selectedPage = document.getElementById(pageId);
-  if (selectedPage) {
-    selectedPage.style.display = 'block';
-  }
-
-  // If the charts page is selected, create the charts
-  if (pageId === 'charts1') {
-    updateYearSelect('yearSelect');
-    createBarCharts();
-  } else if (pageId === 'charts2') {
-    updateYearSelect('yearSelect2');
-    createLineCharts();
-  }
-}
-
-// Function to fetch data asynchronously
-async function fetchData() {
-  const response = await fetch('data/car_prices_subset.csv');
-  const data = await response.text();
-  globalData = d3.csvParse(data);
-  return globalData;
-}
-
-// Function to update year select options
-function updateYearSelect(selectId) {
-  const yearSelect = document.getElementById(selectId);
-  const years = Array.from(new Set(globalData.map(d => d.year)));
-  years.sort();
-  yearSelect.innerHTML = '<option value="all">All</option>';
-  years.forEach(year => {
-    const option = document.createElement('option');
-    option.value = year;
-    option.text = year;
-    yearSelect.appendChild(option);
-  });
-}
-
-// Function to update charts based on selected year
-function updateCharts() {
-  const selectedYear1 = document.getElementById('yearSelect').value;
-  const selectedYear2 = document.getElementById('yearSelect2').value;
-  
-  if (selectedYear1 === 'all') {
-    createBarCharts(globalData);
-  } else {
-    createBarCharts(globalData.filter(d => d.year === selectedYear1));
-  }
-
-  if (selectedYear2 === 'all') {
-    createLineCharts(globalData);
-  } else {
-    createLineCharts(globalData.filter(d => d.year === selectedYear2));
-  }
-}
-
-// Function to create bar charts
-async function createBarCharts(data = null) {
-  if (!data) {
-    data = await fetchData();
-  }
-
-  createBarChart(data, 'make', '#chart1');
-  createBarChart(data, 'body', '#chart2');
-}
-
 // Function to create a bar chart
 function createBarChart(data, category, elementId) {
   const counts = d3.rollups(data, v => v.length, d => d[category]);
@@ -125,6 +49,116 @@ function createBarChart(data, category, elementId) {
     .attr('width', x.bandwidth())
     .attr('height', d => height - y(d.value))
     .attr('fill', d => color(d.key)); // Use the color scale
+
+  // Find the highest bar
+  const maxData = barData.reduce((max, d) => (d.value > max.value ? d : max), barData[0]);
+
+  // Add annotation for the highest bar
+  const annotationX = x(maxData.key) + x.bandwidth() / 2;
+  const annotationY = y(maxData.value) - 10;
+
+  svg.append('line')
+    .attr('x1', annotationX)
+    .attr('y1', y(maxData.value))
+    .attr('x2', annotationX)
+    .attr('y2', annotationY)
+    .attr('stroke', 'black')
+    .attr('stroke-width', 1)
+    .attr('marker-end', 'url(#arrow)');
+
+  svg.append('text')
+    .attr('x', annotationX)
+    .attr('y', annotationY - 10)
+    .attr('text-anchor', 'middle')
+    .style('font-size', '12px')
+    .style('font-weight', 'bold')
+    .text(`Highest: ${maxData.key} (${maxData.value})`);
+
+  // Define arrow marker
+  svg.append('defs').append('marker')
+    .attr('id', 'arrow')
+    .attr('markerWidth', 10)
+    .attr('markerHeight', 10)
+    .attr('refX', 5)
+    .attr('refY', 5)
+    .attr('orient', 'auto')
+    .append('path')
+    .attr('d', 'M0,0 L10,5 L0,10 Z')
+    .attr('fill', 'black');
+}
+
+// Function to show the correct page
+function showPage(pageId) {
+  // Hide all pages
+  const pages = document.querySelectorAll('.page');
+  pages.forEach(page => {
+    page.style.display = 'none';
+  });
+
+  // Show the selected page
+  const selectedPage = document.getElementById(pageId);
+  if (selectedPage) {
+    selectedPage.style.display = 'block';
+  }
+
+  // If the charts page is selected, create the charts
+  if (pageId === 'charts1') {
+    updateYearSelect('yearSelect');
+    createBarCharts();
+  } else if (pageId === 'charts2') {
+    updateYearSelect('yearSelect2');
+    createLineCharts();
+  }
+}
+
+// Function to fetch data asynchronously
+async function fetchData() {
+  const response = await fetch('data/car_prices_subset.csv');
+  const data = await response.text();
+  globalData = d3.csvParse(data);
+  return globalData;
+}
+
+// Function to update year select options
+function updateYearSelect(selectId) {
+  const yearSelect = document.getElementById(selectId);
+  const years = Array.from(new Set(globalData.map(d => d.year)));
+  years.sort();
+  yearSelect.innerHTML = '<option value="all">All</option>';
+  years.forEach(year => {
+    const option = document.createElement('option');
+    option.value = year;
+    option.text = year;
+    yearSelect.appendChild(option);
+  });
+}
+
+// Function to update charts based on selected year
+function updateCharts() {
+  const selectedYear1 = document.getElementById('yearSelect').value;
+  const selectedYear2 = document.getElementById('yearSelect2').value;
+
+  if (selectedYear1 === 'all') {
+    createBarCharts(globalData);
+  } else {
+    createBarCharts(globalData.filter(d => d.year === selectedYear1));
+  }
+
+  if (selectedYear2 === 'all') {
+    createLineCharts(globalData);
+  } else {
+    createLineCharts(globalData.filter(d => d.year === selectedYear2));
+  }
+}
+
+// Function to create bar charts
+async function createBarCharts(data = null) {
+  if (!data) {
+    data = await fetchData();
+  }
+
+  createBarChart(data, 'make', '#chart1');
+  createBarChart(data, 'body', '#chart2');
 }
 
 // Function to create line charts
