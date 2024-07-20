@@ -218,6 +218,7 @@ async function createLineCharts(data = null) {
 //     .attr('r', 3)
 //     .attr('fill', 'steelblue');
 // }
+
 // Function to create a line chart
 function createLineChart(data, category, value, elementId) {
   // Group data by category and calculate the average selling price
@@ -232,7 +233,7 @@ function createLineChart(data, category, value, elementId) {
 
   const width = 500;
   const height = 300;
-  const margin = { top: 20, right: 20, bottom: 50, left: 50 };
+  const margin = { top: 30, right: 20, bottom: 50, left: 50 };
 
   const svg = d3.select(elementId)
     .html('')  // Clear existing content
@@ -242,6 +243,14 @@ function createLineChart(data, category, value, elementId) {
     .append('g')
     .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
+  // Add a title to the chart
+  svg.append('text')
+    .attr('x', width / 2)
+    .attr('y', -margin.top / 2)
+    .attr('text-anchor', 'middle')
+    .attr('class', 'chart-title')
+    .text(`${category.charAt(0).toUpperCase() + category.slice(1)} vs ${value.charAt(0).toUpperCase() + value.slice(1)}`);
+    
   const x = d3.scaleBand()
     .domain(groupedData.map(d => d.category))
     .range([0, width])
