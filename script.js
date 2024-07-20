@@ -133,8 +133,8 @@ async function createLineCharts(data = null) {
     data = await fetchData();
   }
 
-  // createLineChart(data, 'make', 'sellingprice', '#chart5');
-  createLineChart(data, 'state', 'sellingprice', '#chart5');
+  createLineChart(data, 'make', 'sellingprice', '#chart5');
+  //createLineChart(data, 'state', 'sellingprice', '#chart5'); 
 }
 
 // // Function to create a line chart
@@ -303,7 +303,7 @@ function createLineChart(data, category, value, elementId) {
     .attr('text-anchor', 'middle')
     .style('font-size', '12px')
     .style('font-weight', 'bold')
-    .text(`Highest: ${maxData.category} (${maxData.value.toFixed(2)})`);
+    .text(`Highest one in here: ${maxData.category} (${maxData.value.toFixed(2)})`);
 
   // Define arrow marker
   svg.append('defs').append('marker')
