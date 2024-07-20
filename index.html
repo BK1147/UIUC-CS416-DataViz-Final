@@ -8,27 +8,33 @@
 </head>
 <body>
     <div class="page" id="introduction">
-        <h1>Welcome to the Vehicle Sales and Market Trends</h1>
-        <p>CS416 Data visualization Final</p>
-        <p>This website provides a comprehensive collection of information pertaining to the sales transactions of various vehicles. This dataset encompasses details such as the year, make, model, trim, body type, transmission type, VIN (Vehicle Identification Number), state of registration, condition rating, odometer reading, exterior and interior colors, seller information, Manheim Market Report (MMR) values, selling prices, and sale dates.</p>
+        <h1>Vehicle Sales and Market Trends Dataset in the US</h1>
+        <p>CS416 Narrative Visualization</p>
+        <p>
+            This website provides a comprehensive collection of information pertaining to the sales transactions of various vehicles.<br>
+            This dataset encompasses details such as the year, make, model, trim, body type, transmission type, VIN (Vehicle Identification Number), state of registration, condition rating, odometer reading, exterior and interior colors, seller information, Manheim Market Report (MMR) values, selling prices, and sale dates.<br>
+            This is the third line.
+        </p>
         <button onclick="showPage('charts1')">Next</button>
     </div>
 
     <div class="page" id="charts1">
         <h2>Bar Charts</h2>
+        <p>By clicking the year.....</p>
         <label for="yearSelect">Select Year:</label>
         <select id="yearSelect" onchange="updateCharts()"></select>
         <div id="barCharts" class="chart-grid">
             <div id="chart1" class="chart"></div>
+            <h3>testing</h3>
             <p>
-                This is the first line.<br>
-                This is the second line.<br>
-                This is the third line.
+                This bar chart visualizes the distribution of vehicles by their makes. <br>
+                Each bar represents a different make (e.g., Toyota, Ford, Honda) and the height of the bar corresponds to the number of vehicles from that make in the dataset.<br>
             </p>
             <div id="chart2" class="chart"></div>
+            <h3>testing</h3>
             <p>
-                This is the first line.<br>
-                This is the second line.<br>
+                This bar chart visualizes the distribution of vehicles by their body types. <br>
+                Each bar represents a different body type (e.g., sedan, SUV, truck) and the height of the bar corresponds to the number of vehicles of that body type in the dataset.<br>
                 This is the third line.
             </p>
         </div>
@@ -38,6 +44,7 @@
 
     <div class="page" id="charts2">
         <h2>Bar Chart</h2>
+        <p>By clicking the year....</p>
         <label for="yearSelect2">Select Year:</label>
         <select id="yearSelect2" onchange="updateCharts()"></select>
         <div id="chart5" class="chart"></div>
