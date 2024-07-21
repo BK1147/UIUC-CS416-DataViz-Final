@@ -82,7 +82,7 @@ function createBarChart(data, category, elementId) {
   const width = 500;
   const height = 300;
   // top was 20
-  const margin = { top: 30, right: 20, bottom: 50, left: 50 }; 
+  const margin = { top: 40, right: 20, bottom: 50, left: 50 }; 
 
   const svg = d3.select(elementId)
     .html('')  // Clear existing content
