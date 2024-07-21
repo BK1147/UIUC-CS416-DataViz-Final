@@ -233,7 +233,7 @@ function createLineChart(data, category, value, elementId) {
 
   const width = 500;
   const height = 300;
-  const margin = { top: 30, right: 20, bottom: 50, left: 50 };
+  const margin = { top: 40, right: 20, bottom: 50, left: 50 };
 
   const svg = d3.select(elementId)
     .html('')  // Clear existing content
@@ -321,7 +321,7 @@ function createLineChart(data, category, value, elementId) {
     .attr('text-anchor', 'middle')
     .style('font-size', '12px')
     .style('font-weight', 'bold')
-    .text(`Highest one in here: ${maxData.category} (${maxData.value.toFixed(2)})`);
+    .text(`Highest one: ${maxData.category} (${maxData.value.toFixed(2)})`);
 
   // Define arrow marker
   svg.append('defs').append('marker')
