@@ -26,7 +26,7 @@ function showPage(pageId) {
 
 // Function to fetch data asynchronously
 async function fetchData() {
-  const response = await fetch('data/car_prices_subset.csv');
+  const response = await fetch('data/car_prices_sample_cleaned.csv');
   const data = await response.text();
   globalData = d3.csvParse(data);
   return globalData;
@@ -142,7 +142,7 @@ async function createLineCharts(data = null) {
     data = await fetchData();
   }
 
-  createLineChart(data, 'make', 'sellingprice', '#chart5');
+  createLineChart(data, 'odometer_custom', 'sellingprice', '#chart5'); // make
   //createLineChart(data, 'state', 'sellingprice', '#chart5'); 
 }
 
