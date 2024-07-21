@@ -303,7 +303,7 @@ function createLineChart(data, category, value, elementId) {
   const maxData = groupedData.reduce((max, d) => (d.value > max.value ? d : max), groupedData[0]);
 
   // Add annotation for the highest data point
-  const annotationX = x(maxData.category) + x.bandwidth() / 2;
+  const annotationX = x(maxData.category) + x.bandwidth() / 2 + 10; // no 10?
   const annotationY = y(maxData.value) - 10;
 
   svg.append('line')
