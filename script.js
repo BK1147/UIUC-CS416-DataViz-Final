@@ -318,7 +318,7 @@ function createLineChart(data, category, value, elementId) {
   svg.append('text')
     .attr('x', annotationX + 40)
     .attr('y', annotationY - 10)
-    .attr('text-anchor', 'middle')
+    .attr('text-anchor', 'right') 
     .style('font-size', '12px')
     .style('font-weight', 'bold')
     .text(`Highest one: ${maxData.category} (${maxData.value.toFixed(2)})`);
