@@ -143,7 +143,7 @@ async function createLineCharts(data = null) {
   }
 
   createLineChart(data, 'odometer_custom', 'sellingprice', '#chart5'); // make
-  createLineChart(data, 'make', 'sellingprice', '#chart5'); 
+  createLineChart(data, 'make', 'sellingprice', '#chart6'); 
 }
 
 // Function to create a line chart
