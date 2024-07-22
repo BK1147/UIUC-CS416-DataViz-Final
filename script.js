@@ -143,81 +143,8 @@ async function createLineCharts(data = null) {
   }
 
   createLineChart(data, 'odometer_custom', 'sellingprice', '#chart5'); // make
-  //createLineChart(data, 'state', 'sellingprice', '#chart5'); 
+  createLineChart(data, 'make', 'sellingprice', '#chart5'); 
 }
-
-// // Function to create a line chart
-// function createLineChart(data, category, value, elementId) {
-//   // Group data by category and calculate the average selling price
-//   const groupedData = d3.rollups(
-//     data,
-//     v => d3.mean(v, d => +d[value]),
-//     d => d[category]
-//   ).map(([key, value]) => ({ category: key, value }));
-
-//   // Sort data by category
-//   groupedData.sort((a, b) => d3.ascending(a.category, b.category));
-
-//   const width = 500;
-//   const height = 300;
-//   const margin = { top: 20, right: 20, bottom: 50, left: 50 };
-
-//   const svg = d3.select(elementId)
-//     .html('')  // Clear existing content
-//     .append('svg')
-//     .attr('width', width + margin.left + margin.right)
-//     .attr('height', height + margin.top + margin.bottom)
-//     .append('g')
-//     .attr('transform', `translate(${margin.left}, ${margin.top})`);
-
-//   const x = d3.scaleBand()
-//     .domain(groupedData.map(d => d.category))
-//     .range([0, width])
-//     .padding(0.1);
-
-//   const y = d3.scaleLinear()
-//     .domain([0, d3.max(groupedData, d => d.value)])
-//     .nice()
-//     .range([height, 0]);
-
-//   // Append the x-axis
-//   svg.append('g')
-//     .attr('class', 'x-axis')
-//     .attr('transform', `translate(0, ${height})`)
-//     .call(d3.axisBottom(x))
-//     .selectAll('text')
-//     .attr('transform', 'rotate(-45)')
-//     .style('text-anchor', 'end');
-
-//   // Append the y-axis
-//   svg.append('g')
-//     .attr('class', 'y-axis')
-//     .call(d3.axisLeft(y));
-
-//   // Line generator
-//   const line = d3.line()
-//     .x(d => x(d.category) + x.bandwidth() / 2)
-//     .y(d => y(d.value));
-
-//   // Append the line path
-//   svg.append('path')
-//     .datum(groupedData)
-//     .attr('class', 'line')
-//     .attr('d', line)
-//     .attr('fill', 'none')
-//     .attr('stroke', 'steelblue')
-//     .attr('stroke-width', 1.5);
-
-//   // Append circles at data points
-//   svg.selectAll('.dot')
-//     .data(groupedData)
-//     .enter().append('circle')
-//     .attr('class', 'dot')
-//     .attr('cx', d => x(d.category) + x.bandwidth() / 2)
-//     .attr('cy', d => y(d.value))
-//     .attr('r', 3)
-//     .attr('fill', 'steelblue');
-// }
 
 // Function to create a line chart
 function createLineChart(data, category, value, elementId) {
@@ -321,7 +248,8 @@ function createLineChart(data, category, value, elementId) {
     .attr('text-anchor', 'right') 
     .style('font-size', '12px')
     .style('font-weight', 'bold')
-    .text(`Highest one: ${maxData.category} (${maxData.value.toFixed(2)})`);
+    .text(`Highest one: ${maxData.category}`);
+    // .text(`Highest one: ${maxData.category} (${maxData.value.toFixed(2)})`);
 
   // Define arrow marker
   svg.append('defs').append('marker')
