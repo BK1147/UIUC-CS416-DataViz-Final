@@ -316,7 +316,7 @@ function createLineChart(data, category, value, elementId) {
     .attr('marker-end', 'url(#arrow)');
 
   svg.append('text')
-    .attr('x', annotationX + 10)
+    .attr('x', annotationX)
     .attr('y', annotationY - 10)
     .attr('text-anchor', 'right') 
     .style('font-size', '12px')
