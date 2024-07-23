@@ -20,9 +20,6 @@ function showPage(pageId) {
     createBarCharts();
   } else if (pageId === 'charts2') {
     updateYearSelect('yearSelect2');
-    createBarCharts();
-  } else if (pageId === 'charts3') {
-    updateYearSelect('yearSelect3');
     createLineCharts();
   }
 }
@@ -53,7 +50,6 @@ function updateYearSelect(selectId) {
 function updateCharts() {
   const selectedYear1 = document.getElementById('yearSelect').value;
   const selectedYear2 = document.getElementById('yearSelect2').value;
-  const selectedYear3 = document.getElementById('yearSelect3').value;
   
   if (selectedYear1 === 'all') {
     createBarCharts(globalData);
@@ -62,15 +58,9 @@ function updateCharts() {
   }
 
   if (selectedYear2 === 'all') {
-    createBarCharts(globalData);
-  } else {
-    createBarCharts(globalData.filter(d => d.year === selectedYear2));
-  }
-
-  if (selectedYear3 === 'all') {
     createLineCharts(globalData);
   } else {
-    createLineCharts(globalData.filter(d => d.year === selectedYear3));
+    createLineCharts(globalData.filter(d => d.year === selectedYear2));
   }
 }
 
