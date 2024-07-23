@@ -1,4 +1,4 @@
-body {
+/* body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
@@ -7,6 +7,24 @@ body {
   align-items: center;
   justify-content: center;
   height: 100vh;
+} */
+
+body {
+  font-family: Arial, sans-serif; /* Sets the font to Arial or a generic sans-serif */
+  margin: 0; /* Removes default margin */
+  padding: 0; /* Removes default padding */
+  display: flex; /* Enables flexbox layout */
+  flex-direction: column; /* Arranges children in a column */
+  align-items: center; /* Centers children horizontally */
+  justify-content: center; /* Centers children vertically */
+  height: 100vh; /* Sets the height to 100% of the viewport height */
+  background-color: #f0f0f0; /* Sets a light gray background color */
+  color: #333; /* Sets a dark gray color for the text */
+  line-height: 1.6; /* Sets the line height for better readability */
+  box-sizing: border-box; /* Ensures padding and border are included in element's total width and height */
+  overflow: auto; /* Allows content to scroll if it overflows the viewport */
+  max-width: 1200px; /* Limits the maximum width of the content */
+  padding: 20px; /* Adds some padding around the content */
 }
 
 .page {
