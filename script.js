@@ -98,7 +98,7 @@ function createBarChart(data, category, elementId) {
     .attr('y', -margin.top / 2)
     .attr('text-anchor', 'middle')
     .attr('class', 'chart-title')
-    .text(`${category.charAt(0).toUpperCase() + category.slice(1)} Distribution`);
+    .text(`Vehicle ${category.charAt(0).toUpperCase() + category.slice(1)} Distribution`);
 
   const x = d3.scaleBand()
     .domain(barData.map(d => d.key))
@@ -143,7 +143,7 @@ async function createLineCharts(data = null) {
   }
 
   createLineChart(data, 'odometer_custom', 'sellingprice', '#chart5'); // make
-  createLineChart(data, 'make', 'sellingprice', '#chart6'); 
+  // createLineChart(data, 'make', 'sellingprice', '#chart6'); 
 }
 
 // Function to create a line chart
