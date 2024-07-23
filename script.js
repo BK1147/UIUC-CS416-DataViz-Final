@@ -20,7 +20,7 @@ function showPage(pageId) {
     createBarCharts();
   } else if (pageId === 'charts2') {
     updateYearSelect('yearSelect2');
-    createLineCharts();
+    createBarCharts();
   } else if (pageId === 'charts3') {
     updateYearSelect('yearSelect3');
     createLineCharts();
@@ -70,7 +70,7 @@ function updateCharts() {
   if (selectedYear3 === 'all') {
     createLineCharts(globalData);
   } else {
-    createLineCharts(globalData.filter(d => d.year === selectedYear2));
+    createLineCharts(globalData.filter(d => d.year === selectedYear3));
   }
 }
 
