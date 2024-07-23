@@ -248,7 +248,7 @@ function createLineChart(data, category, value, elementId) {
     .attr('text-anchor', 'right') 
     .style('font-size', '12px')
     .style('font-weight', 'bold')
-    .text(`Highest one: ${maxData.category}`);
+    .text(`Highest selling price: ${maxData.category}`);
     // .text(`Highest one: ${maxData.category} (${maxData.value.toFixed(2)})`);
 
   // Define arrow marker
