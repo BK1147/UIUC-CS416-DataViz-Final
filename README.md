@@ -2,7 +2,6 @@
 
 https://bk1147.github.io/UIUC-CS416-DataViz-Final/
 
-# Vehicle Sales and Market Trends
 
 ## Overview
 
